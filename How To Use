@@ -13,7 +13,7 @@ extern CGPSNavigator* pGPSNavigator;
 //void UI::drawList()//
 if (pGPSNavigator) pGPSNavigator->Render();
 
-//scriptrpc.cpp
+//netrpc.cpp
 #include "../game_sa/CGPSNavigator.h"
 extern CGPSNavigator* pGPSNavigator;
 
