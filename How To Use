@@ -1,3 +1,22 @@
+//main.cpp
+#include "game_sa/CGPSNavigator.h"
+
+CGPSNavigator*      pGPSNavigator = nullptr;
+
+//void DoInitStuff()//
+pGPSNavigator = new CGPSNavigator();
+
+//GUI.cpp
+#include "../game_sa/CGPSNavigator.h"
+extern CGPSNavigator* pGPSNavigator;
+
+//void UI::drawList()//
+if (pGPSNavigator) pGPSNavigator->Render();
+
+//scriptrpc.cpp
+#include "../game_sa/CGPSNavigator.h"
+extern CGPSNavigator* pGPSNavigator;
+
 // 0.3.7
 void SetCheckpoint(RPCParameters* rpcParams)
 {
