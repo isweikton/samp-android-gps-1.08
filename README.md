@@ -22,6 +22,7 @@ int CRadar__SetCoordBlip_hook(int r0, float X, float Y, float Z, int r4, int r5,
 		float findZ = (( float (*)(float, float))(g_libGTASA+0x3C3DD8+1))(X, Y);
 		findZ += 1.5f;
 
+        CGPS::Clear();
         CGPS::SetTarget({ X, Y, findZ });
 
 		RakNet::BitStream bsSend;
@@ -64,27 +65,33 @@ void CGUI::Render()
 > Find and open game.cpp, then find code below and replace it
 ```
 #include "CGPS.h"
-uint32_t CGame::CreateRadarMarkerIcon(int iMarkerType, float fX, float fY, float fZ, int iColor, int iStyle) {
+uint32_t CGame::CreateRadarMarkerIcon(int iMarkerType, float fX, float fY, float fZ, int iColor, int iStyle)
+{
 	uint32_t dwMarkerID = 0;
 
 	if(iStyle == 1) 
 		ScriptCommand(&create_marker_icon, fX, fY, fZ, iMarkerType, &dwMarkerID);
 	else if(iStyle == 2) 
 		ScriptCommand(&create_radar_marker_icon, fX, fY, fZ, iMarkerType, &dwMarkerID);
-	else if(iStyle == 3) {
+	else if(iStyle == 3)
 		ScriptCommand(&create_icon_marker_sphere, fX, fY, fZ, iMarkerType, &dwMarkerID);
-        CGPS::SetTarget({ fX, fY, fZ });
-	} else
+    else
 		ScriptCommand(&create_radar_marker_without_sphere, fX, fY, fZ, iMarkerType, &dwMarkerID);
 
-	if(iMarkerType == 0) {
-		if(iColor >= 1004) {
+	if(iMarkerType == 0)
+	{
+		if(iColor >= 1004)
+		{
 			ScriptCommand(&set_marker_color, dwMarkerID, iColor);
 			ScriptCommand(&show_on_radar, dwMarkerID, 3);
-		} else {
+		}
+		else
+		{
 			ScriptCommand(&set_marker_color, dwMarkerID, iColor);
 			ScriptCommand(&show_on_radar, dwMarkerID, 2);
 		}
+
+        CGPS::SetTarget({ fX, fY, fZ });
 	}
 
 	return dwMarkerID;
