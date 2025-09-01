@@ -60,5 +60,41 @@ void CGUI::Render()
 }
 ```
 
-5) End! Good luck!
+5) Okay, last thing it there in server logic!
+> Find and open game.cpp, then find code below and replace it
+```
+#include "CGPS.h"
+uint32_t CGame::CreateRadarMarkerIcon(int iMarkerType, float fX, float fY, float fZ, int iColor, int iStyle) {
+	uint32_t dwMarkerID = 0;
+
+	if(iStyle == 1) 
+		ScriptCommand(&create_marker_icon, fX, fY, fZ, iMarkerType, &dwMarkerID);
+	else if(iStyle == 2) 
+		ScriptCommand(&create_radar_marker_icon, fX, fY, fZ, iMarkerType, &dwMarkerID);
+	else if(iStyle == 3) {
+		ScriptCommand(&create_icon_marker_sphere, fX, fY, fZ, iMarkerType, &dwMarkerID);
+        CGPS::SetTarget({ fX, fY, fZ });
+	} else
+		ScriptCommand(&create_radar_marker_without_sphere, fX, fY, fZ, iMarkerType, &dwMarkerID);
+
+	if(iMarkerType == 0) {
+		if(iColor >= 1004) {
+			ScriptCommand(&set_marker_color, dwMarkerID, iColor);
+			ScriptCommand(&show_on_radar, dwMarkerID, 3);
+		} else {
+			ScriptCommand(&set_marker_color, dwMarkerID, iColor);
+			ScriptCommand(&show_on_radar, dwMarkerID, 2);
+		}
+	}
+
+	return dwMarkerID;
+}
+
+void CGame::DisableMarker(uint32_t dwMarkerID) {
+	ScriptCommand(&disable_marker, dwMarkerID);
+    CGPS::Clear();
+}
+```
+
+6) End! Good luck!
 
